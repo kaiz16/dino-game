@@ -19,6 +19,7 @@ function setCustomProperty(elem, prop, value) {
 // Config
 var GameElem;
 var GameSpeed = 1;
+var SpeedScale = 0.01;
 var StartTimestamp = 0;
 var PreviousTimestamp = 0;
 var GameStarted = false;
@@ -103,10 +104,12 @@ function updateScore() {
   var currentScoreElem = document.querySelector(".current-score");
   currentScoreElem.textContent = score.toString().padStart(5, "0");
 
-  //   For each 100 score mark, play the audio
+  //   For each 100 score mark, play the audio and increase the speed
   if (score % 100 === 0) {
     var audio = document.querySelector(".audio-point");
     audio.play();
+
+    GameSpeed += SpeedScale;
   }
 }
 
@@ -255,7 +258,7 @@ function moveClouds() {
 
     // Remove unnecessary cloud
     if (getCustomProperty(cloudElem, "--left") <= -100) {
-      cloud.remove();
+      cloudElem.remove();
     }
   });
 
