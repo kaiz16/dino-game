@@ -8,6 +8,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "VT323", monospace;
 }
 
 html {
@@ -27,7 +28,6 @@ html {
 .scores {
   position: absolute;
   right: 0;
-  font-family: "VT323", monospace;
   font-size: xxx-large;
   color: #535353;
 }
@@ -79,4 +79,12 @@ html {
   transform: translateY(-50%);
   image-rendering: pixelated;
   object-fit: none;
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
 }

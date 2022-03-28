@@ -25,12 +25,16 @@ var PreviousTimestamp = 0;
 var GameStarted = false;
 var GameOver = false;
 var score = 0;
-
+var enableSelfPlay = false;
 // Game functions - Start
 function updateGame(timestamp) {
   if (!StartTimestamp) StartTimestamp = timestamp;
   var delta = timestamp - PreviousTimestamp;
   score = parseInt(timestamp / 100);
+
+  if (enableSelfPlay) {
+    updateDinoSelf(delta);
+  }
 
   updateDino(delta);
   updateGround(delta);
@@ -40,7 +44,6 @@ function updateGame(timestamp) {
 
   if (checkGameOver()) {
     endGame();
-
     return;
   }
 
@@ -200,6 +203,29 @@ function updateDino(delta) {
   runDino(delta);
   handleJump(delta);
 }
+
+function updateDinoSelf(delta) {
+  runDino(delta);
+  let dino = document.querySelector(".dino");
+  let dinoRect = dino.getBoundingClientRect();
+
+  let cacti = document.querySelectorAll(".cactus");
+  if (!cacti.length) return;
+
+  let nextCactus = Array.from(cacti).filter(
+    (cactus) => getCustomProperty(cactus, "--left") > 0
+  )[0];
+
+  if (!nextCactus) return;
+
+  let cactusRect = nextCactus.getBoundingClientRect();
+  if (cactusRect.x < dinoRect.width * 3 + SpeedScale) {
+    if (jumping || jumpup || jumpdown) return;
+    jumping = true;
+    jumpup = true;
+    handleJump();
+  }
+}
 // Dino functions - End
 
 // Ground functions - Start
@@ -331,5 +357,10 @@ window.onload = () => {
   var elem = document.querySelector("#game");
   elem.style.width = width + "px";
   elem.style.height = height + "px";
+
+  var selfPlayCheckBox = document.querySelector("#selfplay");
+  selfPlayCheckBox.addEventListener("change", function () {
+    enableSelfPlay = this.checked;
+  });
   startGame();
 };
