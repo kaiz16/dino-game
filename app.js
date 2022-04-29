@@ -221,6 +221,8 @@ function updateDinoSelf(delta) {
   let cactusRect = nextCactus.getBoundingClientRect();
   if (cactusRect.x < dinoRect.width * 3 + SpeedScale) {
     if (jumping || jumpup || jumpdown) return;
+    var audio = document.querySelector(".audio-jump");
+    audio.play();
     jumping = true;
     jumpup = true;
     handleJump();
