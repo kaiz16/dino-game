@@ -1,37 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"
-    />
-    <title>dino game</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dino Game</title>
     <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans"
-      rel="stylesheet"
-    />
-    <script src="app.js"></script>
   </head>
-
   <body id="game">
-    <div class="scores">
-      <span class="high-score"></span>
-      <span class="current-score"></span>
+    <div class="score">
+      <span class="current-score">00000</span>
     </div>
-    <img src="./assets/images/dino/dino_initial.png" class="dino" alt="dino" />
-    <img src="./assets/images/ground.png" class="ground" alt="ground" />
-    <img src="./assets/images/ground.png" class="ground-reserve" alt="ground" />
+    <div class="ground">
+      <div class="cactus"></div>
+    </div>
+    <div class="dino"></div>
+    <div class="messages">
+      <p>Press any button to play</p>
+      <p>Game over</p>
+    </div>
     <div class="resources">
       <audio class="audio-jump" src="./assets/jump.wav"></audio>
       <audio class="audio-die" src="./assets/die.wav"></audio>
       <audio class="audio-point" src="./assets/point.wav"></audio>
     </div>
-
-    <div class="footer">
-      <input type="checkbox" id="selfplay" name="selfplay" value="true" />
-      <label for="selfplay">Enable Self Play</label>
-    </div>
+    <script src="app.js"></script>
   </body>
 </html>

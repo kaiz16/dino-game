@@ -1,90 +1,151 @@
-/* Configs */
 @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
 :root {
   --game-speed: 0;
+  --jump-speed: 0;
+  --max-jump: 0;
+  --speed-scale: 0;
 }
 
 * {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  user-select: none;
   font-family: "VT323", monospace;
 }
 
 html {
-  width: 100%;
-  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 #game {
   position: relative;
-  margin: auto;
   border: 1px solid black;
+  overflow: hidden;
 }
 
-.scores {
+.score {
   position: absolute;
   right: 0;
   font-size: xxx-large;
   color: #535353;
 }
 
-.dino {
-  --bottom: 0;
-  position: absolute;
-  left: 1%;
-  bottom: calc(var(--bottom) * 1%);
-  image-rendering: pixelated;
-  height: 85px;
-  object-fit: none;
+.messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-transform: uppercase;
+  height: 100%;
+  font-size: xx-large;
+}
+
+.messages p {
+  display: none;
+}
+
+/* Before game start message */
+.messages p:first-child {
+  display: block;
+}
+
+/* After game start message */
+.game-started p:first-child {
+  display: none;
+}
+
+/* Game over message */
+.game-over p:last-child {
+  display: block;
 }
 
 .ground {
-  --left: 0;
   position: absolute;
+  background-image: url(assets/images/ground.png);
+  background-repeat: repeat-x;
+  image-rendering: pixelated;
   bottom: 0;
-  width: 300%; /* 3x width */
-  left: calc(var(--left) * 1%);
+  width: 7197px;
+  height: 24px;
+}
+
+.game-started > .ground {
+  animation: ground-animation calc(var(--game-speed) * 1ms) linear infinite;
+}
+
+.game-over > .ground {
+  animation-play-state: paused;
+}
+
+@keyframes ground-animation {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -2399px;
+  }
+}
+
+.dino {
+  position: absolute;
+  background-image: url(assets/images/dino/dino_initial.png);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  left: 1%;
+  bottom: 0;
+  width: 88px;
+  height: 94px;
   image-rendering: pixelated;
 }
 
-/* Using a reserve ground to make the ground endless */
-.ground-reserve {
-  --left: 300;
-  position: absolute;
-  bottom: 0;
-  width: 300%; /* 3x width */
-  left: calc(var(--left) * 1%);
-  image-rendering: pixelated;
+.dino.jump {
+  animation: dino-jump-animation calc(var(--jump-speed) * 1ms) linear;
+}
+
+/* See here for the gravity effect
+   https://stackoverflow.com/questions/15423736/how-to-get-a-gravity-effect-in-a-css-animation 
+*/
+@keyframes dino-jump-animation {
+  0% {
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.33333, 0.66667, 0.66667, 1);
+  }
+  50% {
+    transform: translate3d(0, calc(var(--max-jump) * -1%), 0);
+    animation-timing-function: cubic-bezier(0.33333, 0, 0.66667, 0.33333);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .cactus {
-  --left: 0;
   position: absolute;
-  left: calc(var(--left) * 1%);
-  bottom: 0;
+  background-repeat: no-repeat;
   image-rendering: pixelated;
-  object-fit: none;
+  left: 2000px;
+  bottom: 0;
 }
 
-.cloud {
-  --left: 0;
-  --top: 20;
-  position: absolute;
-  left: calc(var(--left) * 1%);
-  top: calc(var(--top) * 1%);
-  transform: translateY(-50%);
-  image-rendering: pixelated;
-  object-fit: none;
+.cactus-small-1 {
+  background-image: url(assets/images/cacti/cacti_small_1.png);
+  height: 70px;
+  width: 34px;
 }
 
-.footer{
-  position: fixed;
-  bottom: 0;
-  text-align: center;
-  width: 100%;
-  padding: 10px;
+.cactus-small-2 {
+  background-image: url(assets/images/cacti/cacti_small_2.png);
+  height: 70px;
+  width: 68px;
+}
+
+.cactus-small-3 {
+  background-image: url(assets/images/cacti/cacti_small_3.png);
+  height: 70px;
+  width: 102px;
 }
