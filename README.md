@@ -47,4 +47,6 @@ animation-timing-function: cubic-bezier(0.33333, 0.66667, 0.66667, 1) /* Before 
 animation-timing-function: cubic-bezier(0.33333, 0, 0.66667, 0.33333) /* While jumping */
 ```
 
+The code above can be found here: https://stackoverflow.com/questions/15423736/how-to-get-a-gravity-effect-in-a-css-animation
+
 _Good luck!_
