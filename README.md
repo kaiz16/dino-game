@@ -1,4 +1,4 @@
-In this session, you will be building a Dino game/T-rex runner. The game is a simple game of running and jumping obstacles. The goal is to acheive the highest score possible.
+For this practice project, you will be building a Dino game/T-rex runner. The game is a simple game of running and jumping obstacles. The goal is to achieve the highest score possible.
 
 Originally, the game was developed by Google and built into the Google Chrome web browser. The game was written in JavaScript and uses HTML5 Canvas. You will be building a replica of this game using HTML, CSS, and JavaScript.
 
@@ -6,7 +6,7 @@ Example can be found here: https://kaiz16.github.io/dino-game/
 
 The game must have the following features:
 
-- A t-rex character that can jump over obstacles by pressing the spacebar. A sound effect should be played when the t-rex jumps.
+- A t-rex character that can jump over obstacles by pressing the space bar. A sound effect should be played when the t-rex jumps.
 - The jump animation should be smooth and natural. _Bonus_ if you can include the gravity effect.
 - A moving ground and obstacles. The ground and obstacles should scroll endlessly to the left and the obstacles should be randomly generated.
 - A score counter that tracks the score of the player. The score should increase gradually as long as the game is running.
@@ -39,7 +39,7 @@ function isCollision(dinoRect, cactusRect) {
 **Hint 3**:  
 You can use CSS animations to move the ground and obstacles from the left to the right. You can find the documentation here: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations. Note that you can still use the `requestAnimationFrame()` function to move the ground and obstacles but an easier way to do this is to use CSS animations directly.
 
-**Hint 4**:
+**Hint 4**:  
 For the gravity effect, you can use the following bezier curve:
 
 ```css
