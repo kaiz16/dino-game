@@ -1,52 +1,37 @@
 var RootElem = document.querySelector(":root");
 var GameElem = document.querySelector("#game");
 var DinoElem = GameElem.querySelector(".dino");
-var GroundElem = GameElem.querySelector(".ground");
-var CactusElem = GameElem.querySelector(".cactus");
 var ScoreElem = GameElem.querySelector(".score");
+var GroundElem = GameElem.querySelector(".ground");
+var CactusElem = GroundElem.querySelector(".cactus");
 
-var GameSpeed = 4000; /* In MS: Decrease this to make game faster */
-var JumpSpeed = 600; /* In MS: Decrease this to jump faster */
+var GameSpeed = 4000;
+var JumpSpeed = 600;
 var MaxJump = 250;
-var SpeedScale = 1; /* Speed increases gradually */
-var Delta = 0;
-var Score = 0;
+var SpeedScale = 1;
 
+var Score = 0;
 var GameStarted = false;
 var GameOver = false;
 
-// Helper function - getCustomProperty
-function getCustomProperty(elem, prop) {
-  return parseFloat(getComputedStyle(elem).getPropertyValue(prop)) || 0;
-}
-
-// Helper function - setCustomProperty
 function setCustomProperty(elem, prop, value) {
   elem.style.setProperty(prop, value);
 }
 
-function onJump(e) {
+function handleJump(e) {
   if (e.code !== "Space") return;
-  handleJump();
-}
-
-function handleJump() {
   var audio = document.querySelector(".audio-jump");
   audio.play();
   DinoElem.classList.add("jump");
-  DinoElem.addEventListener(
-    "animationend",
-    function () {
-      DinoElem.classList.remove("jump");
-    },
-    false
-  );
+  DinoElem.addEventListener("animationend", function () {
+    DinoElem.classList.remove("jump");
+  });
 }
 
 function startGame() {
   GameStarted = true;
   GameElem.classList.add("game-started");
-  document.addEventListener("keydown", onJump);
+  document.addEventListener("keydown", handleJump);
   window.requestAnimationFrame(updateGame);
 }
 
@@ -55,36 +40,30 @@ function endGame() {
   audio.play();
   GameOver = true;
   GameElem.classList.add("game-over");
-  document.removeEventListener("keydown", onJump);
+  document.removeEventListener("keydown", handleJump);
 }
 
+// As long as the game is not over, this function is called every frame
 function updateGame() {
   setCustomProperty(RootElem, "--game-speed", GameSpeed);
   setCustomProperty(RootElem, "--jump-speed", JumpSpeed);
   setCustomProperty(RootElem, "--max-jump", MaxJump);
   setCustomProperty(RootElem, "--speed-scale", SpeedScale);
-  Score += 0.1;
+
+  // Update the score
   updateScore();
+  // Update the cactus
   updateCactus();
+  // Check if game over
   if (checkGameOver()) {
     endGame();
-    return;
+    return; // Won't recurse
   }
   window.requestAnimationFrame(updateGame);
 }
 
-function checkGameOver() {
-  if (GameOver) return true;
-  var dinoRect = DinoElem.getBoundingClientRect();
-  var cactusRect = CactusElem.getBoundingClientRect();
-  if (isCollision(dinoRect, cactusRect)) return true;
-  return false;
-}
-
 function isCollision(dinoRect, cactusRect) {
   // AABB - Axis-aligned bounding box
-  // How to solve this? https://stackoverflow.com/questions/39541744/how-to-detect-collisions-with-a-curve
-  // Adjustments are made to the bounding box as there is a 1 pixel white border around the t-rex and obstacles.
   return (
     dinoRect.x < cactusRect.x + cactusRect.width &&
     dinoRect.x + dinoRect.width > cactusRect.x &&
@@ -93,27 +72,42 @@ function isCollision(dinoRect, cactusRect) {
   );
 }
 
-function updateScore() {
-  var currentScore = parseInt(Score);
-  if (currentScore === 0) return;
+function checkGameOver() {
+  if (GameOver) return true;
+  var dinoRect = DinoElem.getBoundingClientRect();
+  var cactusRect = CactusElem.getBoundingClientRect();
+  if (isCollision(dinoRect, cactusRect)) {
+    return true;
+  }
+  return false;
+}
 
-  //   For each 100 score mark, play the audio and increase the speed
-  if (currentScore % 100 === 0) {
+var scoreInterval = 10;
+var currentScoreInterval = 0;
+function updateScore() {
+  currentScoreInterval += 1;
+  if (currentScoreInterval % scoreInterval === 0) {
+    Score += 1;
+  }
+  if (Score === 0) return;
+  if (Score % 100 === 0) {
     var audio = document.querySelector(".audio-point");
     audio.play();
     GameSpeed -= SpeedScale;
-    Delta += SpeedScale;
   }
 
   var currentScoreElem = ScoreElem.querySelector(".current-score");
-  currentScoreElem.innerText = currentScore.toString().padStart(5, "0");
+  currentScoreElem.innerText = Score.toString().padStart(5, "0");
 }
 
 function updateCactus() {
-  var isOffScreen = CactusElem.getBoundingClientRect().x > window.innerWidth;
+  var cactusXPos = CactusElem.getBoundingClientRect().x;
+  var isOffScreen = cactusXPos > window.innerWidth;
   if (isOffScreen === false) return;
+
   var cacti = ["cactus-small-1", "cactus-small-2", "cactus-small-3"];
-  var cactus = cacti[Math.floor(Math.random() * cacti.length)];
+  var randomNum = Math.floor(Math.random() * cacti.length);
+  var cactus = cacti[randomNum];
   CactusElem.classList.remove(
     "cactus-small-1",
     "cactus-small-2",
@@ -123,7 +117,6 @@ function updateCactus() {
 }
 
 function fitScreen() {
-  console.log(window.devicePixelRatio);
   var width = window.innerWidth;
   var height = window.innerHeight / 2;
   GameElem.style.width = width + "px";

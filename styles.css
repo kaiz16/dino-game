@@ -22,6 +22,7 @@ html {
   overflow: hidden;
 }
 
+/* Game container */
 #game {
   position: relative;
   border: 1px solid black;
@@ -37,10 +38,9 @@ html {
 
 .messages {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
-  text-transform: uppercase;
   height: 100%;
   font-size: xx-large;
   color: #535353;
@@ -50,36 +50,36 @@ html {
   display: none;
 }
 
-/* Before game start message */
+/* Before the game start */
 .messages p:first-child {
   display: block;
 }
 
-/* After game start message */
-.game-started p:first-child {
+/* After the game start */
+.game-started .messages p:first-child {
   display: none;
 }
 
 /* Game over message */
-.game-over p:last-child {
+.game-over .messages p:last-child {
   display: block;
 }
 
 .ground {
   position: absolute;
+  bottom: 0;
   background-image: url(assets/images/ground.png);
   background-repeat: repeat-x;
   image-rendering: pixelated;
-  bottom: 0;
-  width: 7197px;
+  width: 7197px; /* 3x original width */
   height: 24px;
 }
 
-.game-started > .ground {
+.game-started .ground {
   animation: ground-animation calc(var(--game-speed) * 1ms) linear infinite;
 }
 
-.game-over > .ground {
+.game-over .ground {
   animation-play-state: paused;
 }
 
@@ -94,23 +94,19 @@ html {
 
 .dino {
   position: absolute;
+  bottom: 0;
+  left: 1%;
   background-image: url(assets/images/dino/dino_initial.png);
   background-repeat: no-repeat;
   image-rendering: pixelated;
-  left: 1%;
-  bottom: 0;
   width: 88px;
   height: 94px;
-  image-rendering: pixelated;
 }
 
 .dino.jump {
   animation: dino-jump-animation calc(var(--jump-speed) * 1ms) linear;
 }
 
-/* See here for the gravity effect
-   https://stackoverflow.com/questions/15423736/how-to-get-a-gravity-effect-in-a-css-animation 
-*/
 @keyframes dino-jump-animation {
   0% {
     transform: translate3d(0, 0, 0);
@@ -127,10 +123,10 @@ html {
 
 .cactus {
   position: absolute;
+  bottom: 0;
+  left: 2000px;
   background-repeat: no-repeat;
   image-rendering: pixelated;
-  left: 2000px;
-  bottom: 0;
 }
 
 .cactus-small-1 {
