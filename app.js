@@ -6,13 +6,16 @@ var GroundElem = GameElem.querySelector(".ground");
 var CactusElem = GroundElem.querySelector(".cactus");
 
 var GameSpeed = 4000;
-var JumpSpeed = 600;
+var JumpSpeed = (GameSpeed / 10) * 2;
 var MaxJump = 250;
 var SpeedScale = 1;
 
 var Score = 0;
 var GameStarted = false;
 var GameOver = false;
+
+var Jumping = false;
+var SelfPlayMode = false;
 
 function setCustomProperty(elem, prop, value) {
   elem.style.setProperty(prop, value);
@@ -22,10 +25,25 @@ function handleJump(e) {
   if (e.code !== "Space") return;
   var audio = document.querySelector(".audio-jump");
   audio.play();
+  Jumping = true;
   DinoElem.classList.add("jump");
   DinoElem.addEventListener("animationend", function () {
+    Jumping = false;
     DinoElem.classList.remove("jump");
   });
+}
+
+function shouldJump() {
+  var minGap = 250;
+  var cactusXPos = CactusElem.getBoundingClientRect().x;
+
+  // Validations
+  if (cactusXPos <= 0 || Jumping) return false;
+
+  if (cactusXPos < minGap) {
+    return true;
+  }
+  return false;
 }
 
 function startGame() {
@@ -49,7 +67,11 @@ function updateGame() {
   setCustomProperty(RootElem, "--jump-speed", JumpSpeed);
   setCustomProperty(RootElem, "--max-jump", MaxJump);
   setCustomProperty(RootElem, "--speed-scale", SpeedScale);
-
+  if (SelfPlayMode) {
+    if (shouldJump()) {
+      handleJump({ code: "Space" }); // Simulate a jump
+    }
+  }
   // Update the score
   updateScore();
   // Update the cactus
@@ -86,14 +108,16 @@ var scoreInterval = 10;
 var currentScoreInterval = 0;
 function updateScore() {
   currentScoreInterval += 1;
-  if (currentScoreInterval % scoreInterval === 0) {
-    Score += 1;
+  if (currentScoreInterval % scoreInterval !== 0) {
+    return;
   }
+  Score += 1;
   if (Score === 0) return;
   if (Score % 100 === 0) {
     var audio = document.querySelector(".audio-point");
     audio.play();
     GameSpeed -= SpeedScale;
+    JumpSpeed = (GameSpeed / 10) * 2;
   }
 
   var currentScoreElem = ScoreElem.querySelector(".current-score");
@@ -127,5 +151,10 @@ function fitScreen() {
 window.addEventListener("load", function () {
   fitScreen();
   window.addEventListener("resize", fitScreen);
+
+  var selfPlayElem = document.querySelector("#selfplay");
+  selfPlayElem.addEventListener("change", function () {
+    SelfPlayMode = selfPlayElem.checked;
+  });
   document.addEventListener("keydown", startGame, { once: true });
 });
