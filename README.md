@@ -37,7 +37,7 @@ function isCollision(dinoRect, cactusRect) {
 ```
 
 **Hint 3**:  
-You can use CSS animations to move the ground and obstacles from the left to the right. You can find the documentation here: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations. Note that you can still use the `requestAnimationFrame()` function to move the ground and obstacles but an easier way to do this is to use CSS animations directly.
+You can use CSS animations to move the ground and obstacles from left to right. You can find the documentation here: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations. Note that you can still use the `requestAnimationFrame()` function to move the ground and obstacles but an easier way to do this is to use CSS animations directly.
 
 **Hint 4**:  
 For the gravity effect, you can use the following bezier curve:
