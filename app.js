@@ -4,7 +4,7 @@ var DinoElem = GameElem.querySelector(".dino");
 var ScoreElem = GameElem.querySelector(".score");
 var GroundElem = GameElem.querySelector(".ground");
 var CactusElem = GroundElem.querySelector(".cactus");
-
+var CenterElem = DinoElem.querySelector(".center");
 var GameSpeed = 4000;
 var JumpSpeed = (GameSpeed / 10) * 2;
 var MaxJump = 250;
@@ -96,7 +96,7 @@ function isCollision(dinoRect, cactusRect) {
 
 function checkGameOver() {
   if (GameOver) return true;
-  var dinoRect = DinoElem.getBoundingClientRect();
+  var dinoRect = CenterElem.getBoundingClientRect();
   var cactusRect = CactusElem.getBoundingClientRect();
   if (isCollision(dinoRect, cactusRect)) {
     return true;

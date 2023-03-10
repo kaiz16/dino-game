@@ -99,8 +99,19 @@ html {
   background-image: url(assets/images/dino/dino_initial.png);
   background-repeat: no-repeat;
   image-rendering: pixelated;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 88px;
   height: 94px;
+}
+
+.center {
+  width: 10px;
+  height: 10px;
+  /* Uncomment line below to see the center point */
+  /* border-radius: 50%;
+  background-color: red; */
 }
 
 .dino.jump {
@@ -154,3 +165,4 @@ html {
   width: 100%;
   padding: 10px;
 }
+
