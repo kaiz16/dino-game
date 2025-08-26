@@ -106,6 +106,14 @@ html {
   height: 94px;
 }
 
+.dino-run-left {
+  background-image: url(assets/images/dino/dino_run_left.png);
+}
+
+.dino-run-right {
+  background-image: url(assets/images/dino/dino_run_right.png);
+}
+
 .center {
   width: 10px;
   height: 10px;

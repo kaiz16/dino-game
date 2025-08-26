@@ -16,6 +16,7 @@ var GameOver = false;
 
 var Jumping = false;
 var SelfPlayMode = false;
+var DinoAnimationInterval = null;
 
 function setCustomProperty(elem, prop, value) {
   elem.style.setProperty(prop, value);
@@ -34,7 +35,9 @@ function handleJump(e) {
 }
 
 function shouldJump() {
-  var minGap = 250;
+  // Scale minGap inversely to GameSpeed (250 was calibrated for GameSpeed = 4000)
+  // Lower GameSpeed = faster movement = need larger gap
+  var minGap = (250 * 4000) / GameSpeed;
   var cactusXPos = CactusElem.getBoundingClientRect().x;
 
   // Validations
@@ -46,19 +49,32 @@ function shouldJump() {
   return false;
 }
 
+function animateDino() {
+  if (DinoElem.classList.contains("dino-run-left")) {
+    DinoElem.classList.remove("dino-run-left");
+    DinoElem.classList.add("dino-run-right");
+    return;
+  }
+
+  DinoElem.classList.remove("dino-run-right");
+  DinoElem.classList.add("dino-run-left");
+}
+
 function startGame() {
   GameStarted = true;
   GameElem.classList.add("game-started");
   document.addEventListener("keydown", handleJump);
+  DinoAnimationInterval = window.setInterval(animateDino, 100);
   window.requestAnimationFrame(updateGame);
 }
 
 function endGame() {
-  var audio = document.querySelector(".audio-die");
+  var audio = document.querySelector(".audio-gameover");
   audio.play();
   GameOver = true;
   GameElem.classList.add("game-over");
   document.removeEventListener("keydown", handleJump);
+  window.clearInterval(DinoAnimationInterval);
 }
 
 // As long as the game is not over, this function is called every frame
@@ -138,6 +154,17 @@ function updateCactus() {
     "cactus-small-3"
   );
   CactusElem.classList.add(cactus);
+}
+
+function updateDino() {
+  if (DinoElem.classList.contains("dino-run-left")) {
+    DinoElem.classList.remove("dino-run-left");
+    DinoElem.classList.add("dino-run-right");
+    return;
+  }
+
+  DinoElem.classList.remove("dino-run-right");
+  DinoElem.classList.add("dino-run-left");
 }
 
 function fitScreen() {
